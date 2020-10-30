@@ -4,9 +4,9 @@ import torch.nn as nn
 from SelfAttention import SelfAttention
 
 
-class TransformerUnit(nn.Module):
+class EncoderUnit(nn.Module):
     def __init__(self, embed_size: int, heads: int, forward_expansion: int, dropout: float = 0.5):
-        super(TransformerUnit, self).__init__()
+        super(EncoderUnit, self).__init__()
         
         self.embed_size = embed_size
         self.heads = heads

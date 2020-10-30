@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from clone import get_clones
 
-from TransformerUnit import TransformerUnit
+from EncoderUnit import EncoderUnit
 
 
 class Encoder(nn.Module):
@@ -31,8 +31,8 @@ class Encoder(nn.Module):
         self.word_embeddings = nn.Embedding(self.src_vocab_size, self.embed_size)
         self.positional_embeddings = nn.Embedding(self.max_len, self.embed_size)
         
-        self.transformer_units = get_clones(
-            TransformerUnit(self.embed_size, self.heads, self.forward_expansion, self.dropout),
+        self.encoder_units = get_clones(
+            EncoderUnit(self.embed_size, self.heads, self.forward_expansion, self.dropout),
             self.n_layers
         )
         self.dropout = nn.Dropout(dropout)

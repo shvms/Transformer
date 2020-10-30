@@ -60,4 +60,5 @@ class SelfAttention(nn.Module):
         attn_scores = attn_scores.reshape(batch_size, len_queries, self.heads * self.head_dim)
         
         # final linear layer
+        # dim: batch_size * q * embed_size
         return self.fc_linear(attn_scores)

@@ -13,7 +13,7 @@ class Encoder(nn.Module):
         heads: int,
         n_layers: int,
         max_len: int,
-        device: str,
+        device: torch.device,
         forward_expansion: int,
         dropout: float = 0.5,
     ):
@@ -39,8 +39,8 @@ class Encoder(nn.Module):
     
     def forward(self, x: torch.Tensor, mask: torch.Tensor = None):
         N, sent_length = x.shape
-        positions = torch.arange(0, sent_length).expand(N, sent_length)
-        x = self.word_embeddings(x) + self.positional_embeddings(positions)
+        positions = torch.arange(0, sent_length).expand(N, sent_length).to(self.device)
+        x = self.dropout(self.word_embeddings(x) + self.positional_embeddings(positions))
         
         for transformer_unit in self.transformer_units:
             x = transformer_unit(values=x, keys=x, queries=x, mask=mask)

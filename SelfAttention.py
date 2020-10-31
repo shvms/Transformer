@@ -17,7 +17,7 @@ class SelfAttention(nn.Module):
         self.keys_linear = nn.Linear(self.head_dim, self.head_dim, bias=False)
         self.queries_linear = nn.Linear(self.head_dim, self.head_dim, bias=False)
         
-        self.fc_linear = nn.Linear(self.head_dim * self.heads, self.heads_dim * self.heads)
+        self.fc_linear = nn.Linear(self.head_dim * self.heads, self.head_dim * self.heads)
     
     def scaled_dot_product_attention(self, values: torch.Tensor, keys: torch.Tensor, queries: torch.Tensor,
                                      mask: torch.Tensor = None) -> torch.Tensor:
@@ -32,10 +32,11 @@ class SelfAttention(nn.Module):
         
         attn_prob = F.softmax(scores, dim=-1)
         
-        # values dim: n_batch * heads * len_values * head_dim
+        # values dim: n_batch * heads * v * head_dim
+        # attn dim:   n_batch * heads * q * k
         # NOTE: len_values == len_keys. In both Encoder & Decoder part.
         # Output dim: n_batch * q * heads * head_dim
-        return torch.matmul(attn_prob.transpose(1, 2), values)
+        return torch.einsum('nhql,nhld->nqhd', [attn_prob, values])
     
     def forward(self, values: torch.Tensor, keys: torch.Tensor, queries: torch.Tensor, mask: torch.Tensor):
         """

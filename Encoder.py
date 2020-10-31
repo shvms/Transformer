@@ -42,7 +42,7 @@ class Encoder(nn.Module):
         positions = torch.arange(0, sent_length).expand(N, sent_length).to(self.device)
         x = self.dropout(self.word_embeddings(x) + self.positional_embeddings(positions))
         
-        for transformer_unit in self.transformer_units:
-            x = transformer_unit(values=x, keys=x, queries=x, mask=mask)
+        for encoder_unit in self.encoder_units:
+            x = encoder_unit(values=x, keys=x, queries=x, mask=mask)
         
         return x

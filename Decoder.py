@@ -45,4 +45,4 @@ class Decoder(nn.Module):
         for decoder_unit in self.decoder_units:
             x = decoder_unit(x, enc_out, enc_out, tgt_mask, src_mask)
         
-        return self.linear(x)
+        return self.linear_out(x)

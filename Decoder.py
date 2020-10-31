@@ -30,8 +30,11 @@ class Decoder(nn.Module):
         self.word_embeddings = nn.Embedding(tgt_vocab_size, embed_size)
         self.positional_embeddings = nn.Embedding(max_len, embed_size)
         
-        self.decoder_units = get_clones(DecoderUnit(embed_size, heads, forward_expansion, dropout, device))
+        self.decoder_units = get_clones(DecoderUnit(embed_size, heads, forward_expansion, dropout, device), n_layers)
         self.dropout = nn.Dropout(dropout)
+
+        # target vocab size to later use softmax probability over all words
+        self.linear_out = nn.Linear(embed_size, tgt_vocab_size)
     
     def forward(self, x: torch.Tensor, enc_out: torch.Tensor, tgt_mask: torch.Tensor, src_mask: torch.Tensor = None):
         N, sent_length = x.shape
@@ -42,4 +45,4 @@ class Decoder(nn.Module):
         for decoder_unit in self.decoder_units:
             x = decoder_unit(x, enc_out, enc_out, tgt_mask, src_mask)
         
-        return x
+        return self.linear(x)

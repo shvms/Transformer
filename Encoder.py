@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
-from clone import get_clones
 
-from EncoderUnit import EncoderUnit
+from .clone import get_clones
+from .EncoderUnit import EncoderUnit
 
 
 class Encoder(nn.Module):

@@ -1,6 +1,6 @@
 import torch
 
-from Transformer import Transformer
+from .Transformer import Transformer
 
 def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

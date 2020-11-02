@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from clone import get_clones
-from DecoderUnit import DecoderUnit
+from .clone import get_clones
+from .DecoderUnit import DecoderUnit
 
 class Decoder(nn.Module):
     def __init__(

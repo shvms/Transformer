@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 
-from SelfAttention import SelfAttention
-from EncoderUnit import EncoderUnit
+from .SelfAttention import SelfAttention
+from .EncoderUnit import EncoderUnit
 
 
 class DecoderUnit(nn.Module):

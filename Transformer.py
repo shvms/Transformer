@@ -28,6 +28,7 @@ class Transformer(nn.Module):
         
         self.encoder = Encoder(src_vocab_size, embed_size, heads, n_layers, max_len, device, forward_expansion, dropout)
         self.decoder = Decoder(tgt_vocab_size, embed_size, heads, n_layers, max_len, device, forward_expansion, dropout)
+        self.softmax = nn.Softmax(dim=-1)
     
     def forward(self, src: torch.Tensor, tgt: torch.Tensor):
         src_mask = self.get_src_mask(src)
@@ -35,7 +36,7 @@ class Transformer(nn.Module):
         
         enc_out = self.encoder(src, src_mask)
         dec_out = self.decoder(tgt, enc_out, tgt_mask, src_mask)
-        return dec_out
+        return self.softmax(dec_out)
     
     def get_src_mask(self, src: torch.Tensor):
         # dim: N * 1 * 1 * src_len
